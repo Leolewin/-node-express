@@ -1,0 +1,19 @@
+{
+  "name": "node-express",
+  "version": "1.0.0",
+  "description": "study of express",
+  "main": "index.js",
+  "scripts": {
+    "test": "-t"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leolewin/-node-express.git"
+  },
+  "author": "leolewin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Leolewin/-node-express/issues"
+  },
+  "homepage": "https://github.com/Leolewin/-node-express#readme"
+}
