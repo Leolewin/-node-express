@@ -2,7 +2,7 @@
   "name": "node-express",
   "version": "1.0.0",
   "description": "study of express",
-  "main": "index.js",
+  "main": "meadowlark.js",
   "scripts": {
     "test": "-t"
   },
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Leolewin/-node-express/issues"
   },
-  "homepage": "https://github.com/Leolewin/-node-express#readme"
+  "homepage": "https://github.com/Leolewin/-node-express#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0"
+  }
 }
