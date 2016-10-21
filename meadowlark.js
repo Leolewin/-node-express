@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require('path');
 var app = express();
+var fortune = require('./public/lib/fortune.js');
 
 //set engine
 var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
@@ -17,7 +18,7 @@ app.get('/', function(req, res){
 	res.render('home');
 });
 app.get('/about', function(req, res){
-	res.render('about');
+	res.render('about', {fortune : fortune.getFortune()});
 });
 
 //404
