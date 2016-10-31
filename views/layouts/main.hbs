@@ -6,10 +6,12 @@
 	<link rel="stylesheet" type="text/css" href="/vendor/mocha.css">
 	{{/if}}
 	<script type="text/javascript" src = "/plugins/jquery/jquery.min.js"></script>
+    {{{_sections.head}}}
 </head>
 <body>
 	<header><img src="/img/logo.png" alt = "site logo"></header>
 	{{{body}}}
+    {{{_sections.jQuery}}}
     {{#if showTests}}
 	<div id = "mocha"></div>
 	<script type="text/javascript" src = /vendor/mocha.js></script>

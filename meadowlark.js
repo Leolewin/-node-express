@@ -5,7 +5,18 @@ var fortune = require('./public/lib/fortune.js');
 var weather = require('./public/lib/weatherData.js');
 
 //set engine
-var handlebars = require('express-handlebars').create({defaultLayout: 'main', extname : '.hbs'});
+var handlebars = require('express-handlebars').create({
+		defaultLayout: 'main',
+		extname: '.hbs',
+		helpers: {
+			section: function (name, options) {
+				if (!this._sections) this._sections = {};
+				this._sections[name] = options.fn(this);
+				return null;
+			}
+		}
+	}
+);
 app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -15,48 +26,52 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === "1";
 	next();
 });
 
-app.use(function(req, res, next){
-	if(!res.locals.partials)
+app.use(function (req, res, next) {
+	if (!res.locals.partials)
 		res.locals.partials = {};
 	res.locals.partials.weather = weather.getWeatherData();
 	next();
 });
 
-app.get('/', function(req, res){
-	console.log(res.locals.partials.weather.locations);
+app.get('/', function (req, res) {
+	//console.log(res.locals.partials.weather.locations);
 	res.render('home');
 	// res.render('partials/weather')
 });
-app.get('/about', function(req, res){
+app.get('/about', function (req, res) {
 	res.render('about', {
-		fortune : fortune.getFortune(),
-		pageTestScript : '/qa/tests-about.js'});
+		fortune: fortune.getFortune(),
+		pageTestScript: '/qa/tests-about.js'
+	});
 });
-app.get('/tours/hood-river', function(req, res){
+app.get('/jquery', function (req, res) {
+	res.render('jqTest');
+});
+app.get('/tours/hood-river', function (req, res) {
 	res.render('tours/hood-river');
 });
-app.get('/tours/request-group-rate', function(req, res){
+app.get('/tours/request-group-rate', function (req, res) {
 	res.render('tours/request-group-rate');
 });
 
 //404
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
 	res.status(404);
 	res.render('404');
 });
 
 //500
-app.use(function(err, req, res, next){
+app.use(function (err, req, res, next) {
 	console.error(err.stack);
 	res.status(500);
 	res.render("505");
 });
 
-app.listen(app.get('port'), function(){
+app.listen(app.get('port'), function () {
 	console.log('Express started on http://localhost:' + app.get('port'));
 });
