@@ -3,6 +3,8 @@ var path = require('path');
 var app = express();
 var fortune = require('./public/lib/fortune.js');
 var weather = require('./public/lib/weatherData.js');
+var cresentials = require('./public/lib/credentials.js');
+
 
 //set engine
 var handlebars = require('express-handlebars').create({
@@ -21,6 +23,12 @@ app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+//use cookie
+app.use(require('cookie-parser')(cresentials.cookieSecret));
+//use session
+app.use(require('express-session')());
+
+
 //set static folder
 app.use(express.static(__dirname + '/public'));
 
@@ -38,8 +46,14 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res, err){
+	var name = req.body.name || '';
+	var email = req.body.email || '';
+});
+
+app.get('/home', function (req, res) {
 	//console.log(res.locals.partials.weather.locations);
+	res.cookie('user', 'express cookie test');
 	res.render('home');
 	// res.render('partials/weather')
 });
