@@ -49,11 +49,12 @@ app.use(function (req, res, next) {
 app.get('/', function(req, res, err){
 	var name = req.body.name || '';
 	var email = req.body.email || '';
+
 });
 
 app.get('/home', function (req, res) {
 	//console.log(res.locals.partials.weather.locations);
-	res.cookie('user', 'express cookie test');
+	res.cookie('user', 'express cookie test'); 
 	res.render('home');
 	// res.render('partials/weather')
 });
