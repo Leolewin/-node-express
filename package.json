@@ -4,7 +4,9 @@
   "description": "study of express",
   "main": "meadowlark.js",
   "scripts": {
-    "test": "-t"
+    "test": "-t",
+    "start": "node meadowlark.js",
+    "watch": "supervisor meadowlark.js",
   },
   "repository": {
     "type": "git",
