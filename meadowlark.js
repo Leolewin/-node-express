@@ -23,11 +23,12 @@ app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+//use body-parser to process form
+app.use(require('body-parser')());
 //use cookie
 app.use(require('cookie-parser')(cresentials.cookieSecret));
 //use session
 app.use(require('express-session')());
-
 
 //set static folder
 app.use(express.static(__dirname + '/public'));
@@ -39,23 +40,40 @@ app.use(function (req, res, next) {
 	next();
 });
 
+
 app.use(function (req, res, next) {
 	if (!res.locals.partials)
 		res.locals.partials = {};
 	res.locals.partials.weather = weather.getWeatherData();
+
+	//save the session message and delete it	
+	res.locals.flash = req.session.flash;
+	delete req.session.flash;
 	next();
 });
 
-app.get('/', function(req, res, err){
+
+app.post('/', function(req, res, err){
 	var name = req.body.name || '';
 	var email = req.body.email || '';
 	var reg = /\w+@\w+.com/ig;
 	if(!email.match(reg)){
+		console.log('---------1---------------');
 		if(req.xhr) return res.json({error : "Invalid name eamil address."});
+		req.session.flash = {
+			type: 'danger',
+			intro: req.body.email,
+			message: 'This eamil address you entered is not valid!'
+		};
+		return res.redirect(303, '/error/login_error');
+	}else{
+		return res.redirect(303, '/home');
 	}
-
 });
-
+ 
+app.get('/', function(req, res){
+	res.render('index');
+});
 app.get('/home', function (req, res) {
 	//console.log(res.locals.partials.weather.locations);
 	res.cookie('user', 'express cookie test');
@@ -68,6 +86,10 @@ app.get('/about', function (req, res) {
 		pageTestScript: '/qa/tests-about.js'
 	});
 });
+app.get('/error/login_error', function(req, res){
+	res.render('loginError');
+});
+
 app.get('/jquery', function (req, res) {
 	res.render('jqTest');
 });

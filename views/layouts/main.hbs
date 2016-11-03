@@ -2,18 +2,17 @@
 <html>
 <head>
 	<title>Meadowlark Travel</title>
+	<link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css">
 	{{#if showTests}}
 	<link rel="stylesheet" type="text/css" href="/vendor/mocha.css">
 	{{/if}}
 	<script type="text/javascript" src = "/plugins/jquery/jquery.min.js"></script>
     {{{_sections.head}}}
-    {{{_sections.head_bootstrap}}}
 </head>
 <body>
 	<header><img src="/img/logo.png" alt = "site logo"></header>
 	{{{body}}}
-    {{{_sections.jQuery}}}
-    {{{_sections.js_bootstrap}}}
+	<script type="text/javascript" src="/plugins/bootstrap/js/bootstrap.min.js"></script>
     {{#if showTests}}
 	<div id = "mocha"></div>
 	<script type="text/javascript" src = /vendor/mocha.js></script>
