@@ -2,7 +2,7 @@ var express = require("express");
 var path = require('path');
 var app = express();
 var fortune = require('./public/lib/fortune.js');
-var weather = require('./public/lib/weatherData.js');
+ var weather = require('./public/lib/weatherData.js');
 var cresentials = require('./public/lib/credentials.js');
 
 
@@ -119,3 +119,8 @@ app.listen(app.get('port'), function () {
 
 
 //
+// //
+// app.use(function(req, res, next));
+// app.use('/a', function(req, res, next));
+// app.use(function(err, req, res, next));
+// 以上是常见的express 中间件的形式
