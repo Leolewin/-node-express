@@ -124,3 +124,4 @@ app.listen(app.get('port'), function () {
 // app.use('/a', function(req, res, next));
 // app.use(function(err, req, res, next));
 // 以上是常见的express 中间件的形式
+// 
