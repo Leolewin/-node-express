@@ -6,13 +6,14 @@ var fortune = require('./public/lib/fortune.js');
 var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
 
+//nodemailer to set mail server
 var mailTransport = nodemailer.createTransport('SMTP', {
 	service: 'Gmail',
 	auth: {
 		user: cresentials.gmail.user,
 		password: cresentials.gmail.password
 	}
-})
+});
 
 
 //set engine
@@ -134,3 +135,14 @@ app.listen(app.get('port'), function () {
 // app.use(function(err, req, res, next));
 // 以上是常见的express 中间件的形式
 // 
+// 
+mailTransport.sendMail({
+	from: "Meadowlark Travel <info@meadowlarktravel.com>",
+	to: "leolewin@163.com",
+	subject: "node express nodemailer demo test",
+	text: "if the demo succeed, you will see the infomation here and you can delete this mail"
+},function(err){
+	if(err){
+		console.error('Unable to send a mail' + err);
+	}
+})
