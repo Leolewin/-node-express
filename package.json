@@ -27,12 +27,16 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "jquery": "^3.1.1",
-    "jshint": "^2.9.4"
+    "jshint": "^2.9.4",
+    "nodemailer": "^2.6.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
     "mocha": "^3.1.2"
+  },
+  "script": {
+    "start": "node meadowlark.js"
   }
 }
