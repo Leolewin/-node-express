@@ -4,6 +4,15 @@ var app = express();
 var fortune = require('./public/lib/fortune.js');
  var weather = require('./public/lib/weatherData.js');
 var cresentials = require('./public/lib/credentials.js');
+var nodemailer = require('nodemailer');
+
+var mailTransport = nodemailer.createTransport('SMTP', {
+	service: 'Gmail',
+	auth: {
+		user: cresentials.gmail.user,
+		password: cresentials.gmail.password
+	}
+})
 
 
 //set engine
