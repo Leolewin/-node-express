@@ -8,10 +8,12 @@ var nodemailer = require('nodemailer');
 
 //nodemailer to set mail server
 var mailTransport = nodemailer.createTransport('SMTP', {
-	service: 'Gmail',
+	host: 'smtp.163.com',
+	secureConnection: true,
+	port: 465,
 	auth: {
-		user: cresentials.gmail.user,
-		password: cresentials.gmail.password
+		user: cresentials.mail_163.user,
+		pass: cresentials.mail_163.password
 	}
 });
 
@@ -123,6 +125,21 @@ app.use(function (err, req, res, next) {
 	res.render("505");
 });
 
+
+//发送邮件
+mailTransport.sendMail({
+	from: "Meadowlark Travel <leolewin@163.com>",
+	to: "449375181@qq.com",
+	subject: "node express nodemailer demo test",
+	text: "if the demo succeed, you will see the infomation here and you can delete this mail",
+	html: "<h1>Meadowlark Travel</h1>\n<p>Thanks with book your trip with Meadowlark Travel</p>" +
+			"<b>We look forword to your visit"
+},function(err){
+	if(err){
+		console.error('Unable to send a mail' + err);
+	}
+})
+
 app.listen(app.get('port'), function () {
 	console.log('Express started on http://localhost:' + app.get('port'));
 });
@@ -136,13 +153,3 @@ app.listen(app.get('port'), function () {
 // 以上是常见的express 中间件的形式
 // 
 // 
-mailTransport.sendMail({
-	from: "Meadowlark Travel <info@meadowlarktravel.com>",
-	to: "leolewin@163.com",
-	subject: "node express nodemailer demo test",
-	text: "if the demo succeed, you will see the infomation here and you can delete this mail"
-},function(err){
-	if(err){
-		console.error('Unable to send a mail' + err);
-	}
-})
