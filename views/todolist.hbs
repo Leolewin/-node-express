@@ -36,6 +36,8 @@
     </div>  
 {{#section 'jqtodolist'}}
     <script>  
+    localStorage.removeItem('todolist_user');
+    localStorage.removeItem('todolist_list');
         new Vue({  
             el: '#todolist',  
             data: function () {  
