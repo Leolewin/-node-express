@@ -1,4 +1,5 @@
-var router = app.Router();
+var express = require("express");
+var router = express.Router();
 
 router.post('/', function(req, res, err){
 	var name = req.body.name || '';
@@ -83,6 +84,10 @@ router.post('/cart/checkout', function(req, res){
 	res.render('carThanks', {
 		cart: cart
 	});
+});
+
+router.get('/todolist', function(req, res){
+	res.sendfile('views/todolist.html');
 });
 
 module.exports = router;
