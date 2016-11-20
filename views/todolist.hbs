@@ -1,11 +1,14 @@
-    <!-- <script src="../../public/plugins/vue/vue.min.js"></script>   -->
+{{#section 'todolist'}}
+    <script src="plugins/vue/vue.min.js"></script>  
 
     <style type="text/css">  
+        #todo {display: inline-block;}
         #todolist li.finished { background-color: green; color: white; }  
     </style>  
+{{/section}}
     <div id="todolist">  
         <h2 @click="clickH2" v-bind:title="!isEditting?'点击编辑':''">  
-            <input v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
+            <input id="#todo" v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
             <span v-show="!isEditting" @click="isEditting=true" title="点击编辑">{{user}}</span>  
             <span>的todolist</span>  
         </h2>  
@@ -31,6 +34,7 @@
             </li>  
         </ul>  
     </div>  
+{{#section 'jqtodolist'}}
     <script>  
         new Vue({  
             el: '#todolist',  
@@ -96,3 +100,4 @@
             }  
         })  
     </script>  
+{{/section}}
