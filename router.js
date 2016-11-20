@@ -1,4 +1,4 @@
-var router = express.Router();
+var router = app.Router();
 
 router.post('/', function(req, res, err){
 	var name = req.body.name || '';
