@@ -87,7 +87,7 @@ router.post('/cart/checkout', function(req, res){
 });
 
 router.get('/todolist', function(req, res){
-	res.sendfile('views/todolist.html');
+	res.render('todolist');
 });
 
 module.exports = router;
