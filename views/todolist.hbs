@@ -1,7 +1,7 @@
 {{#section 'todolist'}}
     <script src="plugins/vue/vue.min.js"></script>  
     <style type="text/css">  
-        /*#todo {display: inline-block;}*/
+        #todo {display: inline-block;}
         #todolist li.finished { background-color: green; color: white; }  
     </style>  
 {{/section}}
@@ -32,21 +32,6 @@
             </li>  
         </ul>  
     </div>  
-    <div id="todo-list-example">
-      <input
-        v-model="newTodoText"
-        v-on:keyup.enter="addNewTodo"
-        placeholder="Add a todo"
-      >
-      <ul>
-        <li
-          is="todo-item"
-          v-for="(todo, index) in todos"
-          v-bind:title="todo"
-          v-on:remove="todos.splice(index, 1)"
-        >{{todo}}</li>
-      </ul>
-    </div>
     <script>  
     localStorage.removeItem('todolist_user');
     localStorage.removeItem('todolist_list');
@@ -106,7 +91,25 @@
                 }  
             }  
         });
-
+        </script>
+        <div id="todo-list-example">
+          <input
+            v-model="newTodoText"
+            v-on:keyup.enter="addNewTodo"
+            placeholder="Add a todo"
+          >
+          <ul>
+            <li
+              
+              v-for="(todo, index) in todos"
+              v-bind:title="todo"
+              v-on:remove="todos.splice(index, 1)"
+            >{{todo}}
+                <button v-on:click="todos.splice(index, 1)">X</button>
+            </li>
+          </ul>
+        </div>
+        <script>
         // Vue.component('todo-item', {
         //       template: '\
         //         <li>\
