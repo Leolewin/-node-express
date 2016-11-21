@@ -9,7 +9,7 @@
     <div id="todolist">  
         <h2 @click="clickH2" v-bind:title="!isEditting?'点击编辑':''">  
             <input id="#todo" v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
-            <span v-show="!isEditting" @click="isEditting=true" title="点击编辑">{{user}}的todolist</span>
+            <div v-show="!isEditting" @click="isEditting=true" v-bind:title="user">{{title}} 的todolist</div>
         </h2>  
         <div>  
             <button @click="addOne">添加新项目</button>  
@@ -33,23 +33,31 @@
             </li>  
         </ul>  
     </div>  
+    <div id="todo-list-example">
+      <input
+        v-model="newTodoText"
+        v-on:keyup.enter="addNewTodo"
+        placeholder="Add a todo"
+      >
+      <ul>
+        <li
+          is="todo-item"
+          v-for="(todo, index) in todos"
+          v-bind:title="todo"
+          v-on:remove="todos.splice(index, 1)"
+        ></li>
+      </ul>
+    </div>
     <script>  
     localStorage.removeItem('todolist_user');
     localStorage.removeItem('todolist_list');
         new Vue({  
             el: '#todolist',  
-            data: function () {  
-                var user = localStorage.getItem('todolist_user') || ''  
-                var list = []  
-                var listStr = localStorage.getItem('todolist_list')  
-                if (listStr) {  
-                    list = JSON.parse(listStr)  
-                }  
-                return {  
+            data: {  
                     isEditting: false,  
-                    user: user,  
-                    list: list  
-                }  
+                    user: "",  
+                    list: []  
+                 
             },  
             watch: {  
                 user: function (val, oldVal) {  
@@ -98,5 +106,32 @@
                     this.list = []  
                 }  
             }  
-        })  
+        }) ;
+
+        Vue.component('todo-item', {
+              template: '\
+                <li>\
+                  {{ title }}\
+                  <button v-on:click="$emit(\'remove\')">X</button>\
+                </li>\
+              ',
+              props: ['title']
+            });
+        new Vue({
+          el: '#todo-list-example',
+          data: {
+            newTodoText: '',
+            todos: [
+              'Do the dishes',
+              'Take out the trash',
+              'Mow the lawn'
+            ]
+          },
+          methods: {
+            addNewTodo: function () {
+              this.todos.push(this.newTodoText)
+              this.newTodoText = ''
+            }
+          }
+        }) 
     </script>  
