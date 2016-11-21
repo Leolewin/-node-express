@@ -1,6 +1,5 @@
 {{#section 'todolist'}}
     <script src="plugins/vue/vue.min.js"></script>  
-
     <style type="text/css">  
         /*#todo {display: inline-block;}*/
         #todolist li.finished { background-color: green; color: white; }  
@@ -9,7 +8,7 @@
     <div id="todolist">  
         <h2 @click="clickH2" v-bind:title="!isEditting?'点击编辑':''">  
             <input id="#todo" v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
-            <div v-show="!isEditting" @click="isEditting=true" v-bind:title="user">{{title}} 的todolist</div>
+            <div v-show="!isEditting" @click="isEditting=true" v-bind:title="user">{{ user }} 的todolist</div>
         </h2>  
         <div>  
             <button @click="addOne">添加新项目</button>  
@@ -45,7 +44,7 @@
           v-for="(todo, index) in todos"
           v-bind:title="todo"
           v-on:remove="todos.splice(index, 1)"
-        ></li>
+        >{{todo}}</li>
       </ul>
     </div>
     <script>  
@@ -106,32 +105,32 @@
                     this.list = []  
                 }  
             }  
-        }) ;
+        });
 
-        Vue.component('todo-item', {
-              template: '\
-                <li>\
-                  {{ title }}\
-                  <button v-on:click="$emit(\'remove\')">X</button>\
-                </li>\
-              ',
-              props: ['title']
-            });
+        // Vue.component('todo-item', {
+        //       template: '\
+        //         <li>\
+        //           {{ title }}\
+        //           <button v-on:click="$emit(\'remove\')">X</button>\
+        //         </li>\
+        //       ',
+        //       props: ['title']
+        //     });
         new Vue({
-          el: '#todo-list-example',
-          data: {
-            newTodoText: '',
-            todos: [
-              'Do the dishes',
-              'Take out the trash',
-              'Mow the lawn'
-            ]
-          },
-          methods: {
-            addNewTodo: function () {
-              this.todos.push(this.newTodoText)
-              this.newTodoText = ''
-            }
-          }
-        }) 
+              el: '#todo-list-example',
+              data: {
+                newTodoText: '',
+                todos: [
+                  'Do the dishes',
+                  'Take out the trash',
+                  'Mow the lawn'
+                ]
+              },
+              methods: {
+                addNewTodo: function () {
+                  this.todos.push(this.newTodoText)
+                  this.newTodoText = '';
+                }
+              }
+            });
     </script>  
