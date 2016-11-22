@@ -29,7 +29,7 @@
     "jquery": "^3.1.1",
     "jshint": "^2.9.4",
     "nodemailer": "^2.6.4",
-    "vue": "^2.0.8",
+    "vue": "^1.0.0",
     "webpack": "^1.13.3"
   },
   "devDependencies": {

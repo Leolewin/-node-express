@@ -1,24 +1,25 @@
-{{#section 'todolist'}}
-    <script src="plugins/vue/vue.min.js"></script>  
-    <script>
-        Vue.config.delimiters = ["[[", "]]"]
-    </script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script src="public/plugins/vue/vue.min.js"></script>  
     <style type="text/css">  
         #todo {display: inline-block;}
         #todolist li.finished { background-color: green; color: white; }  
     </style>  
-{{/section}}
     <div id="todolist">  
         <h2 @click="clickH2" v-bind:title="!isEditting?'点击编辑':''">  
             <input id="#todo" v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
-            <span v-show="!isEditting" @click="isEditting=true" v-bind:title="user">[[user]] 的todolist</span>
+            <div v-show="!isEditting" @click="isEditting=true" v-bind:title="user">${user} 的todolist</div>
         </h2>  
         <div>  
             <button @click="addOne">添加新项目</button>  
             <button @click="deleteSelectedItems">删除所选项目</button>  
             <button @click="deleteAll">删除所有项目</button>  
         </div>  
-        <ul v-for="(index, item) in list">  
+        <ul v-for="(item, index) in list">  
             <li v-bind:class="[item.finished?'finished':'']">  
                 <div v-show="item.isEditting">  
                     <input type="checkbox" v-model="item.selected" />  
@@ -27,7 +28,7 @@
                 </div>  
                 <div v-show="!item.isEditting">  
                     <input type="checkbox" v-model="item.selected" />  
-                    <span>[[item.title]]</span>  
+                    <span>{{item.title}}</span>  
                     <button v-if="!item.finished" @click="item.finished=true">标记为已完成</button>  
                     <button v-if="item.finished" @click="item.finished=false">标记为未完成</button>  
                     <button @click="editItem(index)">编辑</button>  
@@ -35,9 +36,6 @@
             </li>  
         </ul>  
     </div>  
-    <br/>
-    <hr/>
-    <br/>
     <script>  
     localStorage.removeItem('todolist_user');
     localStorage.removeItem('todolist_list');
@@ -107,10 +105,10 @@
           <ul>
             <li
               
-              v-for="(index, todo) in todos"
+              v-for="(todo, index) in todos"
               v-bind:title="todo"
               v-on:remove="todos.splice(index, 1)"
-            >[[todo]]
+            >{{todo}}
                 <button v-on:click="todos.splice(index, 1)">X</button>
             </li>
           </ul>
@@ -142,4 +140,6 @@
                 }
               }
             });
-    </script>  
+    </script> 
+</body>
+</html>
