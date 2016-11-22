@@ -1,8 +1,7 @@
-This is a demo of node express <br/>
-<hr/>
+This is a demo of node express
 -------------------------------------
-Follows are the steps to run the demo <br/>
-1. npm install <br/>
+Follows are the steps to run the demo
+1. npm install 
 2. node meadowlark.js
 
 need to be finished funciton is mail server
