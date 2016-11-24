@@ -160,7 +160,7 @@
               <label v-if="label">[[ label ]]</label>\
               $\
               <input\
-                ref="input"\
+                v-ref="input"\
                 v-bind:value="value"\
                 v-on:input="updateValue($event.target.value)"\
                 v-on:focus="selectAll"\
