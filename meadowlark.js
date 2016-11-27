@@ -96,8 +96,9 @@ app.use(function (err, req, res, next) {
 // 	}
 // })
 
-app.listen(app.get('port'), function () {
-	console.log('Express started on http://localhost:' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function () {
+	console.log('Express started in ' + app.get('env') + 
+		'model on http://localhost:' + app.get('port') + '; Press Control + C to terminate');
 });
 
 
