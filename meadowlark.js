@@ -59,6 +59,14 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
 
+//show the requests info on diffrent workers
+app.use(function(req, res, next){
+	var cluster = require('cluster');
+	if(cluster.isWorker){
+		console.log('worker %d received request', cluster.worker.id);
+	}
+})
+
 app.use(function (req, res, next) {
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === "1";
 	next();
