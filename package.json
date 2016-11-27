@@ -24,10 +24,12 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
+    "express-logger": "0.0.3",
     "express-session": "^1.14.2",
     "gulp": "^3.9.1",
     "jquery": "^3.1.1",
     "jshint": "^2.9.4",
+    "morgan": "^1.7.0",
     "nodemailer": "^2.6.4",
     "vue": "^1.0.0",
     "webpack": "^1.13.3"

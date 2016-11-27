@@ -7,6 +7,17 @@ var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
 var router = require('./router');
 
+switch(app.get('env')){
+	case 'development':
+		app.use(require('morgan')('dev'));
+		break;
+	case 'production':
+		app.use(require('express-logger')({
+			path: _dirname + '/log/requsets.log'
+		}));
+		break;
+}
+
 //nodemailer to set mail server
 var mailTransport = nodemailer.createTransport('SMTP', {
 	host: 'smtp.163.com',
@@ -96,7 +107,7 @@ app.use(function (err, req, res, next) {
 // 	}
 // })
 
-http.createServer(app).listen(app.get('port'), function () {
+app.listen(app.get('port'), function () {
 	console.log('Express started in ' + app.get('env') + 
 		'model on http://localhost:' + app.get('port') + '; Press Control + C to terminate');
 });
