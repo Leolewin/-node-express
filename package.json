@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
+    "cluster": "^0.7.7",
     "connect": "^3.5.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
@@ -31,6 +32,7 @@
     "jshint": "^2.9.4",
     "morgan": "^1.7.0",
     "nodemailer": "^2.6.4",
+    "os": "^0.1.1",
     "vue": "^1.0.0",
     "webpack": "^1.13.3"
   },
