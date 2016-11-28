@@ -14,7 +14,7 @@ if(cluster.isMaster){
 	//因此我们可以等待exit事件然后产生一个新的线程来替代它
 	cluster.on('disconnect', function(){
 		console.log('CLUSTER : worker %d disconnected from the cluster', worker.id);
-	})
+	});
 
 	//当所有的线程退出时，创建一个新的线程来替代它
 	cluster.on('exit', function(worker, code, signal){

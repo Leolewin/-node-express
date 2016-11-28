@@ -63,16 +63,16 @@ app.use(function(req, res, next){
 	domain.run(next);
 });
 
-//nodemailer to set mail server
-var mailTransport = nodemailer.createTransport('SMTP', {
-	host: 'smtp.163.com',
-	secureConnection: true,
-	port: 465,
-	auth: {
-		user: cresentials.mail_163.user,
-		pass: cresentials.mail_163.password
-	}
-});
+// //nodemailer to set mail server
+// var mailTransport = nodemailer.createTransport('SMTP', {
+// 	host: 'smtp.163.com',
+// 	secureConnection: true,
+// 	port: 465,
+// 	auth: {
+// 		user: cresentials.mail_163.user,
+// 		pass: cresentials.mail_163.password
+// 	}
+// });
 
 
 //set engine

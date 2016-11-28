@@ -21,10 +21,15 @@
 	<script type="text/javascript">
 		mocha.ui("tdd");
 		var assert = chai.assert;
+		var expect = chai.expect;
+		debugger;
 	</script>
 	<script type="text/javascript" src = /qa/test-globals.js></script>
 	{{#if pageTestScript}}
 	<script type="text/javascript" src = '{{pageTestScript}}'></script>
+	{{/if}}
+    {{#if stressTestScript}}
+	<script type="text/javascript" src = '{{stressTestScript}}'></script>
 	{{/if}}
 	<script type="text/javascript">
 		mocha.run();

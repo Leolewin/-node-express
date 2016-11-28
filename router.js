@@ -1,6 +1,21 @@
 var express = require("express");
+var fortune = require('./public/lib/fortune.js');
+var cresentials = require('./public/lib/credentials.js');
+var nodemailer = require('nodemailer');
 var router = express.Router();
 var app = express();
+
+//nodemailer to set mail server
+var mailTransport = nodemailer.createTransport('SMTP', {
+	host: 'smtp.163.com',
+	secureConnection: true,
+	port: 465,
+	auth: {
+		user: cresentials.mail_163.user,
+		pass: cresentials.mail_163.password
+	}
+});
+
 
 router.post('/', function(req, res, err){
 	var name = req.body.name || '';
@@ -89,6 +104,25 @@ router.post('/cart/checkout', function(req, res){
 
 router.get('/todolist', function(req, res){
 	res.render('todolist');
+});
+
+router.get('/tests/stress', function (req, res) {
+	var loadtest = require('loadtest');
+	var suite = require('mocha').suite;
+	var expect = require('chai').expect;
+
+
+			var options = {
+				url: 'http://localhost:3000',
+				concurency: 4,
+				maxRequests: 10000
+			};
+			loadtest.loadTest(options, function(err, result){
+				expect(!err);
+				expect(result.totalTimeSeconds > 1);
+			});
+
+	res.render('about');
 });
 
 //error process
