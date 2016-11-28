@@ -90,4 +90,9 @@ router.get('/todolist', function(req, res){
 	res.render('todolist');
 });
 
+//error process
+router.get('/fail', function(req, res){
+	throw new Error('Nope!');
+})
+
 module.exports = router;

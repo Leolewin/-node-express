@@ -7,6 +7,17 @@ var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
 var router = require('./router');
 
+switch(app.get('env')){
+	case 'development':
+		app.use(require('morgan')('dev'));
+		break;
+	case 'production':
+		app.use(require('express-logger')({
+			path: _dirname + '/log/requsets.log'
+		}));
+		break;
+}
+
 //nodemailer to set mail server
 var mailTransport = nodemailer.createTransport('SMTP', {
 	host: 'smtp.163.com',
@@ -48,6 +59,14 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
 
+//show the requests info on diffrent workers
+app.use(function(req, res, next){
+	var cluster = require('cluster');
+	if(cluster.isWorker){
+		console.log('worker %d received request', cluster.worker.id);
+	}
+})
+
 app.use(function (req, res, next) {
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === "1";
 	next();
@@ -66,90 +85,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', router);
-// app.post('/', function(req, res, err){
-// 	var name = req.body.name || '';
-// 	var email = req.body.email || '';
-// 	var reg = /\w+@\w+.com/ig;
-// 	if(!email.match(reg)){
-// 		console.log('---------1---------------');
-// 		if(req.xhr) return res.json({error : "Invalid name eamil address."});
-// 		req.session.flash = {
-// 			type: 'danger',
-// 			intro: req.body.email,
-// 			message: 'This eamil address you entered is not valid!'
-// 		};
-// 		return res.redirect(303, '/error/login_error');
-// 	}else{
-// 		return res.redirect(303, '/home');
-// 	}
-// });
- 
-// app.get('/', function(req, res){
-// 	res.render('index');
-// });
-// app.get('/home', function (req, res) {
-// 	//console.log(res.locals.partials.weather.locations);
-// 	res.cookie('user', 'express cookie test');
-// 	res.render('home');
-// 	// res.render('partials/weather')
-// });
-// app.get('/about', function (req, res) {
-// 	res.render('about', {
-// 		fortune: fortune.getFortune(),
-// 		pageTestScript: '/qa/tests-about.js'
-// 	});
-// });
-// app.get('/error/login_error', function(req, res){
-// 	res.render('loginError');
-// });
 
-// app.get('/jquery', function (req, res) {
-// 	res.render('jqTest');
-// });
-// app.get('/tours/hood-river', function (req, res) {
-// 	res.render('tours/hood-river');
-// });
-// app.get('/tours/request-group-rate', function (req, res) {
-// 	res.render('tours/request-group-rate');
-// });
-// app.post('/cart/checkout', function(req, res){
-// 	console.log('get in cart confirm');
-// 	var cart = req.session.cart || {};
-// 	// if(!cart) next(new Error("cart dosn't exist"));
-// 	var name = req.body.name || "",
-// 		email = req.body.email || "";
-// 	var reg = /\w+@\w+.com/ig;
-// 	if(!email.match(reg)){
-// 		return res.next(new Error('Invalid email address.'));
-// 	}
-// 	cart.number = Math.random().toString().replace(/^0\.0*/, "");
-// 	cart.billing = {
-// 		name: name,
-// 		email: email
-// 	};
-// 	res.render('email/carThanks',{
-// 		layout: null,
-// 		cart: cart
-// 	}, function(err, html){
-// 		if(err){
-// 			console.log("error in email template");
-// 		}
-// 		mailTransport.sendMail({
-// 			from: "Meadowlark Travel : <leolewin@163.com>",
-// 			to: cart.billing.email,
-// 			subject: "test email for my learning on express",
-// 			html: html,
-// 			generateTextFromHtml: true
-// 		}, function(err){
-// 			if(err){
-// 				console.log("Unable to send confimation" + err.stack);
-// 			}
-// 		});
-// 	});
-// 	res.render('carThanks', {
-// 		cart: cart
-// 	});
-// });
 
 //404
 app.use(function (req, res, next) {
@@ -178,12 +114,20 @@ app.use(function (err, req, res, next) {
 // 		console.error('Unable to send a mail' + err);
 // 	}
 // })
+// 
 
-app.listen(app.get('port'), function () {
-	console.log('Express started on http://localhost:' + app.get('port'));
-});
+function startServer(){
+	app.listen(app.get('port'), function () {
+	console.log('Express started in ' + app.get('env') + 
+		'model on http://localhost:' + app.get('port') + '; Press Control + C to terminate');
+	});
+}
 
-
+if(require.main === module){
+	startServer();
+}else{
+	module.exports = startServer;
+}
 //
 // //
 // app.use(function(req, res, next));

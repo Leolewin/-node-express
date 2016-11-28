@@ -1,25 +1,25 @@
-{{#section 'todolist'}}
-    <script src="plugins/vue/vue.min.js"></script>  
-    <script src="https://cdn.rawgit.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e/raw/98739fb8ac6779cb2da11aaa9ab6032e52f3be00/currency-validator.js"></script>
-    <script>
-        Vue.config.delimiters = ["[[", "]]"]
-    </script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script src="public/plugins/vue/vue.min.js"></script>  
     <style type="text/css">  
         #todo {display: inline-block;}
         #todolist li.finished { background-color: green; color: white; }  
     </style>  
-{{/section}}
     <div id="todolist">  
         <h2 @click="clickH2" v-bind:title="!isEditting?'点击编辑':''">  
             <input id="#todo" v-model="user" v-show="isEditting" @keyup.enter="isEditting=false" @blur="isEditting=false" />  
-            <span v-show="!isEditting" @click="isEditting=true" v-bind:title="user">[[user]] 的todolist</span>
+            <div v-show="!isEditting" @click="isEditting=true" v-bind:title="user">{{ user }} 的todolist</div>
         </h2>  
         <div>  
             <button @click="addOne">添加新项目</button>  
             <button @click="deleteSelectedItems">删除所选项目</button>  
             <button @click="deleteAll">删除所有项目</button>  
         </div>  
-        <ul v-for="(index, item) in list">  
+        <ul v-for="(item, index) in list">  
             <li v-bind:class="[item.finished?'finished':'']">  
                 <div v-show="item.isEditting">  
                     <input type="checkbox" v-model="item.selected" />  
@@ -28,7 +28,7 @@
                 </div>  
                 <div v-show="!item.isEditting">  
                     <input type="checkbox" v-model="item.selected" />  
-                    <span>[[item.title]]</span>  
+                    <span>{{item.title}}</span>  
                     <button v-if="!item.finished" @click="item.finished=true">标记为已完成</button>  
                     <button v-if="item.finished" @click="item.finished=false">标记为未完成</button>  
                     <button @click="editItem(index)">编辑</button>  
@@ -36,8 +36,6 @@
             </li>  
         </ul>  
     </div>  
-    <br/>
-    <hr/>
     <script>  
     localStorage.removeItem('todolist_user');
     localStorage.removeItem('todolist_list');
@@ -107,10 +105,10 @@
           <ul>
             <li
               
-              v-for="(index, todo) in todos"
+              v-for="(todo, index) in todos"
               v-bind:title="todo"
               v-on:remove="todos.splice(index, 1)"
-            >[[todo]]
+            >{{todo}}
                 <button v-on:click="todos.splice(index, 1)">X</button>
             </li>
           </ul>
@@ -142,83 +140,6 @@
                 }
               }
             });
-        </script>  
-    <br>
-    <hr>
-    <div id="app">
-      <currency-input  label="Price"  v-model="price"></currency-input>
-      <currency-input  label="Shipping"  v-model="shipping"></currency-input>
-      <currency-input  label="Handling" v-model="handling" ></currency-input>
-      <currency-input  label="Discount" v-model="discount"></currency-input>
-
-      <p>Total: $[[ total ]]</p>
-    </div>
-    <script>
-        Vue.component('currency-input', {
-          template: '\
-            <div>\
-              <label v-if="label">[[ label ]]</label>\
-              $\
-              <input\
-                v-ref="input"\
-                v-bind:value="value"\
-                v-on:input="updateValue($event.target.value)"\
-                v-on:focus="selectAll"\
-                v-on:blur="formatValue"\
-              >\
-            </div>\
-          ',
-          props: {
-            value: {
-              type: Number,
-              default: 0
-            },
-            label: {
-              type: String,
-              default: ''
-            }
-          },
-          mounted: function () {
-            this.formatValue();
-          },
-          methods: {
-            updateValue: function (value) {
-              var result = currencyValidator.parse(value, this.value)
-              if (result.warning) {
-                this.$refs.input.value = result.value
-              }
-              this.$emit('input', result.value)
-            },
-            formatValue: function () {
-              this.$refs.input.value = currencyValidator.format(this.value)
-            },
-            selectAll: function (event) {
-              // Workaround for Safari bug
-              // http://stackoverflow.com/questions/1269722/selecting-text-on-focus-using-jquery-not-working-in-safari-and-chrome
-              setTimeout(function () {
-                event.target.select()
-              }, 0)
-            }
-          }
-        });
-
-        new Vue({
-          el: '#app',
-          data: {
-            price: 0,
-            shipping: 0,
-            handling: 0,
-            discount: 0
-          },
-          computed: {
-            total: function () {
-              return ((
-                this.price * 100 + 
-                this.shipping * 100 + 
-                this.handling * 100 - 
-                this.discount * 100
-              ) / 100).toFixed(2)
-            }
-          }
-        });
-    </script>
+    </script> 
+</body>
+</html>
