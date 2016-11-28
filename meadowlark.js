@@ -24,33 +24,43 @@ app.use(function(req, res, next){
 	var domain = require('domain').create();
 	domain.on('error', function(err){
 		console.error('DOMAIN ERROR CAUGHT\n', err.stack);
-	});
-	try{
-		//在5s内进行保护关机
-		setTimeout(function(){
-			console.error('Failsafe Shoutdown.');
-		}, 500);
-
-		//从集群中断开
-		var worker = require('cluster').worker;
-		if(worker){
-			worker.disconnect();
-		}
-
-		//停止接受请求
-		server.close();
 
 		try{
-			//try express error router
-			next(err);
+			//在5s内进行保护关机
+			setTimeout(function(){
+				console.error('Failsafe Shoutdown.');
+			}, 500);
+
+			//从集群中断开
+			var worker = require('cluster').worker;
+			if(worker){
+				worker.disconnect();
+			}
+
+			//停止接受请求
+			server.close();
+
+			try{
+				//try express error router
+				next(err);
+			}catch(err){
+				//if the express router failed, try to response with common text
+				console.error('Express error mechanism failed.\n', err.stack);
+				res.statusCode = 500;
+				res.setheader('content-type', 'text/plain');
+				res.render("505");
+			}
 		}catch(err){
-			//if the express router failed, try to response with common text
-			console.error('Express error mechanism failed.\n', err.stack);
-			res.statusCode = 500;
-			res.setheader('content-type', 'text/plain');
-			res.render("505");
+			console.error('Unable to send 500 response.\n', err.stack);
 		}
-	}
+	});
+
+	//向域中添加请求和响应对象
+	domain.add(req);
+	domain.add(res);
+
+	//执行該域中剩余的请求链
+	domain.run(next);
 });
 
 //nodemailer to set mail server
@@ -94,14 +104,6 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
 
-//show the requests info on diffrent workers
-app.use(function(req, res, next){
-	var cluster = require('cluster');
-	if(cluster.isWorker){
-		console.log('worker %d received request', cluster.worker.id);
-	}
-})
-
 app.use(function (req, res, next) {
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === "1";
 	next();
@@ -119,7 +121,18 @@ app.use(function (req, res, next) {
 	next();
 });
 
+//show the requests info on diffrent workers
+app.use(function(req, res, next){
+	var cluster = require('cluster');
+	if(cluster.isWorker){
+		console.log('worker %d received request', cluster.worker.id);
+	}
+	next();
+});
+
 app.use('/', router);
+
+
 
 // //发送邮件
 // mailTransport.sendMail({
@@ -135,6 +148,21 @@ app.use('/', router);
 // 	}
 // })
 
+//404
+//不可以添加err
+//400和500处理一定要添加到普通路由的后面
+app.use(function (req, res, next) {
+	res.status(404);
+	res.render('404');
+});
+
+//500
+app.use(function (err, req, res, next) {
+	console.error(err.stack);
+	res.status(500);
+	res.render("505");
+});
+
 function startServer(){
 	app.listen(app.get('port'), function () {
 	console.log('Express started in ' + app.get('env') + 
@@ -147,7 +175,9 @@ if(require.main === module){
 }else{
 	module.exports = startServer;
 }
-//
+
+
+
 // //
 // app.use(function(req, res, next));
 // app.use('/a', function(req, res, next));
