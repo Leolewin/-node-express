@@ -1,5 +1,50 @@
 var express = require("express");
 var router = express.Router();
+var app = express();
+
+//set the exception process
+app.use(function(req, res, next){
+	var domain = require('domain').create();
+	domain.on('error', function(err){
+		console.error('DOMAIN ERROR CAUGHT\n', err.stack);
+
+		try{
+			//在5s内进行保护关机
+			setTimeout(function(){
+				console.error('Failsafe Shoutdown.');
+			}, 500);
+
+			//从集群中断开
+			var worker = require('cluster').worker;
+			if(worker){
+				worker.disconnect();
+			}
+
+			//停止接受请求
+			server.close();
+
+			try{
+				//try express error router
+				next(err);
+			}catch(err){
+				//if the express router failed, try to response with common text
+				console.error('Express error mechanism failed.\n', err.stack);
+				res.statusCode = 500;
+				res.setheader('content-type', 'text/plain');
+				res.render("505");
+			}
+		}catch(err){
+			console.error('Unable to send 500 response.\n', err.stack);
+		}
+	});
+
+	//向域中添加请求和响应对象
+	domain.add(req);
+	domain.add(res);
+
+	//执行該域中剩余的请求链
+	domain.run(next);
+});
 
 router.post('/', function(req, res, err){
 	var name = req.body.name || '';
@@ -93,6 +138,19 @@ router.get('/todolist', function(req, res){
 //error process
 router.get('/fail', function(req, res){
 	throw new Error('Nope!');
-})
+});
+
+//404
+app.use(function (req, res, next) {
+	res.status(404);
+	res.render('404');
+});
+
+//500
+app.use(function (err, req, res, next) {
+	console.error(err.stack);
+	res.status(500);
+	res.render("505");
+});
 
 module.exports = router;
