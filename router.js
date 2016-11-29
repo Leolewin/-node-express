@@ -34,7 +34,7 @@ router.post('/', function(req, res, err){
 		return res.redirect(303, '/home');
 	}
 });
- 
+
 router.get('/', function(req, res){
 	res.render('index');
 });
