@@ -5,7 +5,8 @@
   "main": "meadowlark.js",
   "scripts": {
     "test": "-t",
-    "start": "supervisor meadowlark.js"
+    "start": "node meadowlark.js",
+    "watch": "supervisor meadowlark.js" 
   },
   "repository": {
     "type": "git",
