@@ -5,7 +5,57 @@ var fortune = require('./public/lib/fortune.js');
 var weather = require('./public/lib/weatherData.js');
 var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
+var mongoose = require('mongoose');
 var router = require('./router');
+var vacation = require('./model/vacation.js');
+
+vacation.find(function(err, vacations){
+	if(vacations.length) return;
+
+	new vacation({
+		name: 'leolewin',
+		slug: 'hood river day trip',
+		category: 'Day Trip',
+		description: 'Spend a day on the Coliubia',
+		priceInCents: 9995,
+		tags: ['day trip', 'hood river', 'sailing', 'windsurfing'],
+		isSeason: true,
+		avaliable: true,
+		requireWaiver: false,
+		maximumGuests: 16,
+		packageSold: 0
+	}).save();
+
+	new vacation({
+		name: 'leon',
+		slug: 'leon Orgen Coast gateWay',
+		category: 'Weekend gateWay',
+		description: 'Enjoy the ocean air and quaint coastal towns',
+		priceInCents: 269995,
+		tags: ['weekend gateway', 'oregon ccaost', 'beachcombing'],
+		isSeason: false,
+		avaliable: true,
+		requireWaiver: false,
+		maximumGuests: 8,
+		packageSold: 0
+	}).save();
+});
+
+var opts = {
+	server: {
+		soketOptions: {keepAlice : 1}
+	}
+};
+switch(app.get('env')){
+	case 'development':
+		mongoose.connect(cresentials.mongo.development.connectionString, opts);
+		break;
+	case 'production':
+		mongoose.connect(cresentials.mongo.production.connectionString, opts);
+		break;
+	default:
+		throw new Error('Unkonwn execution environment: ' + app.get('env'));
+}
 
 //set the runtime model
 switch(app.get('env')){
@@ -115,7 +165,7 @@ app.use(function (req, res, next) {
 		res.locals.partials = {};
 	res.locals.partials.weather = weather.getWeatherData();
 
-	//save the session message and delete it	
+	//save the session message and delete it
 	res.locals.flash = req.session.flash;
 	delete req.session.flash;
 	next();
@@ -165,7 +215,7 @@ app.use(function (err, req, res, next) {
 
 function startServer(){
 	app.listen(app.get('port'), function () {
-	console.log('Express started in ' + app.get('env') + 
+	console.log('Express started in ' + app.get('env') +
 		'model on http://localhost:' + app.get('port') + '; Press Control + C to terminate');
 	});
 }
@@ -183,5 +233,5 @@ if(require.main === module){
 // app.use('/a', function(req, res, next));
 // app.use(function(err, req, res, next));
 // 以上是常见的express 中间件的形式
-// 
-// 
+//
+//

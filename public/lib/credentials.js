@@ -6,10 +6,10 @@ module.exports = {
 	},
 	mongo: {
 		development: {
-			connectionString: 'your_dev_connection_string',
+			connectionString: 'mongodb://localhost',
 		},
 		production: {
-			connectionString: 'your_production_connection_string'
+			connectionString: 'mongodb://localhost'
 		}
 	}
 }
