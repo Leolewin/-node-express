@@ -7,40 +7,9 @@ var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
 var mongoose = require('mongoose');
 var router = require('./router');
-var vacation = require('./model/vacation.js');
+var vacation = require('./models/vacation.js');
 
-vacation.find(function(err, vacations){
-	if(vacations.length) return;
-
-	new vacation({
-		name: 'leolewin',
-		slug: 'hood river day trip',
-		category: 'Day Trip',
-		description: 'Spend a day on the Coliubia',
-		priceInCents: 9995,
-		tags: ['day trip', 'hood river', 'sailing', 'windsurfing'],
-		isSeason: true,
-		avaliable: true,
-		requireWaiver: false,
-		maximumGuests: 16,
-		packageSold: 0
-	}).save();
-
-	new vacation({
-		name: 'leon',
-		slug: 'leon Orgen Coast gateWay',
-		category: 'Weekend gateWay',
-		description: 'Enjoy the ocean air and quaint coastal towns',
-		priceInCents: 269995,
-		tags: ['weekend gateway', 'oregon ccaost', 'beachcombing'],
-		isSeason: false,
-		avaliable: true,
-		requireWaiver: false,
-		maximumGuests: 8,
-		packageSold: 0
-	}).save();
-});
-
+//*****start connnect mongodb****//
 var opts = {
 	server: {
 		soketOptions: {keepAlice : 1}
@@ -56,6 +25,41 @@ switch(app.get('env')){
 	default:
 		throw new Error('Unkonwn execution environment: ' + app.get('env'));
 }
+vacation.find(function(err, vacations){
+	// if(vacations.length) return;
+
+	new vacation({
+		name: 'leolewin',
+		slug: 'hood river day trip',
+		category: 'Day Trip',
+		sku: 'HR199',
+		description: 'Spend a day on the Coliubia',
+		priceInCents: 9995,
+		tags: ['day trip', 'hood river', 'sailing', 'windsurfing'],
+		isSeason: true,
+		avaliable: true,
+		requireWaiver: false,
+		maximumGuests: 16,
+		packageSold: 0
+	}).save();
+
+	new vacation({
+		name: 'leon',
+		slug: 'leon Orgen Coast gateWay',
+		category: 'Weekend gateWay',
+		sku: 'OC099',
+		description: 'Enjoy the ocean air and quaint coastal towns',
+		priceInCents: 269995,
+		tags: ['weekend gateway', 'oregon ccaost', 'beachcombing'],
+		isSeason: false,
+		avaliable: true,
+		requireWaiver: false,
+		maximumGuests: 8,
+		packageSold: 0
+	}).save();
+});
+//*****end connnect mongodb****//
+
 
 //set the runtime model
 switch(app.get('env')){

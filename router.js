@@ -2,6 +2,7 @@ var express = require("express");
 var fortune = require('./public/lib/fortune.js');
 var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
+var vacation = require('./models/vacation.js');
 var router = express.Router();
 var app = express();
 
@@ -130,17 +131,12 @@ router.get('/fail', function(req, res){
 	throw new Error('Nope!');
 });
 
-//404
-app.use(function (req, res, next) {
-	res.status(404);
-	res.render('404');
-});
+//mangodb module router
+router.get('/vacation', function(req, res){
+	vacation.find({avaliable: true}, function(err, vacations)[
 
-//500
-app.use(function (err, req, res, next) {
-	console.error(err.stack);
-	res.status(500);
-	res.render("505");
-});
+	]);
+})
+
 
 module.exports = router;

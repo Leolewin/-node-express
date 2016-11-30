@@ -4,6 +4,7 @@ var vacationSchema = mongoose.Schema({
     name: String,
     slug: String,
     category: String,
+    sku: String,
     description: String,
     priceInCents: Number,
     tags: [String],
