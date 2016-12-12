@@ -3,6 +3,8 @@ var fortune = require('./public/lib/fortune.js');
 var cresentials = require('./public/lib/credentials.js');
 var nodemailer = require('nodemailer');
 var vacation = require('./models/vacation.js');
+// var mongoose = require('mongoose');
+// var vacationSchema = require('./models/vacation.js');
 var router = express.Router();
 var app = express();
 
@@ -131,12 +133,27 @@ router.get('/fail', function(req, res){
 	throw new Error('Nope!');
 });
 
+var i = 0;
 //mangodb module router
 router.get('/vacation', function(req, res){
-	vacation.find({avaliable: true}, function(err, vacations)[
-
-	]);
-})
+		vacation.find({avaliable: true}, function(err, vacations){
+			console.log('-------------------------------------------' + i + '-----------------------------------')
+			var context = {
+				vacations: vacations.map(function(val){
+					var res = {
+						sku: val.sku,
+						name: val.name,
+						description: val.description,
+						price: val.getDisplayPrice(),
+						isSeason: val.isSeason
+					};
+					console.log(res);
+					console.log('-------------------------------------------' + i++ + '-----------------------------------')
+					return res;
+				})
+			}
+		});
+});
 
 
 module.exports = router;

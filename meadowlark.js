@@ -25,9 +25,14 @@ switch(app.get('env')){
 	default:
 		throw new Error('Unkonwn execution environment: ' + app.get('env'));
 }
+
+// //clear all the data first
+// vacationSchema.remove({});
+// //相当于创建了数据库以及对应的table
+// var vacation = mongoose.model('Vacation', vacationSchema);
 vacation.find(function(err, vacations){
 	// if(vacations.length) return;
-
+	console.log(vacations.length)
 	new vacation({
 		name: 'leolewin',
 		slug: 'hood river day trip',
@@ -52,7 +57,7 @@ vacation.find(function(err, vacations){
 		priceInCents: 269995,
 		tags: ['weekend gateway', 'oregon ccaost', 'beachcombing'],
 		isSeason: false,
-		avaliable: true,
+		avaliable: false,
 		requireWaiver: false,
 		maximumGuests: 8,
 		packageSold: 0

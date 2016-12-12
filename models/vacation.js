@@ -19,6 +19,8 @@ vacationSchema.methods.getDisplayPrice = function(){
     return '$' + (this.priceInCents / 100).toFixed(2);
 };
 
+vacationSchema.remove({});
+
 //相当于创建了数据库以及对应的table
 var vacation = mongoose.model('Vacation', vacationSchema);
 
